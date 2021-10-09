@@ -1,1 +1,64 @@
-/* Write your CSS here */
+.login-form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* background-position: center; */
+  background-size: cover;
+  height: 100vh;
+  width: 100%;
+  margin: auto;
+}
+
+@media screen and (min-width: 992px) {
+  .login-form-container {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+}
+
+.login-website-logo-desktop-image {
+  width: 120px;
+  height: 150px;
+}
+@media screen and (min-width: 768px) {
+  .login-website-logo-desktop-image {
+    width: 190px;
+    height: 250px;
+  }
+}
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #181818;
+  border-radius: 8px;
+  width: 75%;
+  max-width: 350px;
+  padding: 34px 28px 34px 28px;
+}
+
+@media screen and (min-width: 992px) {
+  .form-container {
+    width: 350px;
+    flex-shrink: 0;
+    box-shadow: 0px 8px 40px rgba(7, 7, 7, 0.08);
+    padding: 44px 38px 44px 38px;
+  }
+}
+
+.login-button {
+  font-family: 'Roboto';
+  font-weight: bold;
+  font-size: 14px;
+  color: #ffffff;
+  height: 40px;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 2px;
+  background-color: rgba(240, 28, 169, 0.957);
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}

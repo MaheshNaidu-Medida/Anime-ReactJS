@@ -1,0 +1,86 @@
+.specific-anime-review-item-desktop {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  list-style-type: none;
+  border-radius: 8px;
+  padding: 5px 15px 5px 15px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.specific-anime-review-item-desktop:hover {
+  transform: scale(1.02);
+}
+.specific-anime-review-item-first-desktop {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 10px;
+}
+.specific-anime-review-item-detail-desktop {
+  display: flex;
+  align-items: center;
+  padding-bottom: 0px;
+}
+.specific-anime-review-rating-icon-desktop {
+  font-size: 22px;
+  color: #fbbf24;
+  margin-right: 4px;
+}
+.specific-anime-review-item-text-desktop {
+  color: #ffffff;
+  font-family: 'Roboto';
+  font-size: 14px;
+  font-weight: 400;
+}
+.specific-anime-review-item-spl-text-desktop {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
+}
+.specific-anime-delete-button-desktop {
+  background-color: transparent;
+  padding: 0;
+  border: none;
+  margin: 0;
+  outline: none;
+  cursor: pointer;
+}
+.specific-anime-delete-button-desktop:hover {
+  filter: brightness(110%);
+  transform: scale(1.1);
+}
+.specific-anime-delete-icon-desktop {
+  font-size: 22px;
+  color: #cbd5e1;
+  margin-left: 5px;
+}
+@media screen and (max-width: 768px) {
+  .specific-anime-review-item-desktop {
+    border-radius: 8px;
+    padding: 5px 10px 5px 10px;
+    margin-bottom: 8px;
+  }
+  .specific-anime-review-rating-icon-desktop {
+    font-size: 18px;
+    color: #fbbf24;
+    margin-right: 4px;
+  }
+  .specific-anime-review-item-text-desktop {
+    color: #ffffff;
+    font-family: 'Roboto';
+    font-size: 12px;
+    font-weight: 400;
+  }
+  .specific-anime-review-item-spl-text-desktop {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .specific-anime-delete-icon-desktop {
+    font-size: 18px;
+    color: #cbd5e1;
+    margin-left: 5px;
+  }
+}
