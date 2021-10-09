@@ -31,8 +31,6 @@ const loginLogoList = [
 
 class Login extends Component {
   componentDidMount() {
-    // NOTE: We wrote this code here because we kept redirect URL as login route, if you give a different route, make sure to move this code to the respective route or App.js
-
     const hashKey = this.getHashKeyFromLocationAfterLogin()
 
     if (hashKey.access_token) {
@@ -105,19 +103,20 @@ class Login extends Component {
 
   getRedirectURL = () => {
     if (this.isDevelopmentEnvironment()) {
-      /* ADD THIS URL to your Application Redirect URIs to redirect after authentication success OR failure */
-      return 'http://localhost:3000/login'
+      return {
+        redirectUrl: 'http://localhost:3000/login',
+        clientId: '7bf17be3-03f0-4552-aeac-56fb7e4e4fd1',
+      }
     }
-    /* Change this redirectURL accordingly before publishing your project and ADD THIS URL to your Application Redirect URIs to redirect after authentication success OR failure */
-    return 'https://maheshanime.ccbp.tech/login'
+    return {
+      redirectUrl: 'https://maheshanime.ccbp.tech/login',
+      clientId: '88453212-8047-4fbc-9210-92b7e9671bf7',
+    }
   }
 
   openLoginModal = () => {
-    // YOU NEED TO ADD YOUR CLIENT ID HERE
-    const clientId = '6e019026-f02e-4722-9580-38abbdec02bf'
-
-    const redirectUrl = this.getRedirectURL()
-
+    const redirectUrlDetails = this.getRedirectURL()
+    const {redirectUrl, clientId} = redirectUrlDetails
     const url = `https://api.aniapi.com/v1/oauth?response_type=token&client_id=${clientId}&redirect_uri=${redirectUrl}&state=ANI_AUTHENTICATION`
 
     const width = 450
