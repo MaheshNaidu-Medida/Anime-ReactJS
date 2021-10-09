@@ -109,7 +109,7 @@ class Login extends Component {
       return 'http://localhost:3000/login'
     }
     /* Change this redirectURL accordingly before publishing your project and ADD THIS URL to your Application Redirect URIs to redirect after authentication success OR failure */
-    return 'https://maheshaniapi.ccbp.tech/login'
+    return 'https://maheshanime.ccbp.tech/login'
   }
 
   openLoginModal = () => {
