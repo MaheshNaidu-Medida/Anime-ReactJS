@@ -387,7 +387,7 @@ class AnimeItem extends Component {
             backgroundSize: 'cover',
           }}
         >
-          <div>
+          <div className="specific-anime-header-titles-container">
             {fetchedData.titles === undefined || fetchedData.titles === '' ? (
               ''
             ) : (

@@ -50,10 +50,7 @@
 }
 @media screen and (max-width: 768px) {
   .specific-anime-header-desktop {
-    height: 250px;
-  }
-  .specific-anime-title-desktop {
-    font-size: 14px;
+    height: 280px;
   }
   .specific-anime-no-cover-container-desktop {
     height: 150px;
@@ -68,12 +65,19 @@
     width: 100px;
   }
 }
+.specific-anime-header-titles-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  height: 150px;
+}
 .specific-anime-title-desktop {
   color: #ff004c;
   font-family: 'Roboto';
   font-size: 18px;
   font-weight: bold;
-  padding: 0;
 }
 .specific-anime-no-cover-container-desktop {
   height: 200px;
@@ -351,11 +355,15 @@
   .specific-anime-header-details-a-desktop {
     flex-wrap: wrap;
   }
-  .specific-anime-header-desktop {
-    height: 250px;
+  .specific-anime-header-titles-container {
+    height: 120px;
   }
+
   .specific-anime-title-desktop {
-    font-size: 16px;
+    align-self: center;
+    width: 95%;
+    text-align: center;
+    font-size: 14px;
   }
   .specific-anime-no-cover-container-desktop {
     height: 150px;

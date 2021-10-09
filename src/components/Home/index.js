@@ -148,16 +148,19 @@ class Home extends Component {
 
   getCurrentRating = id => {
     const {reviewsList} = this.state
-    let totalRating = 0
-    let avgRating = 'NA'
-    reviewsList.filter(each => {
+
+    const finalList = reviewsList.filter(each => {
       if (each.id === id) {
         return true
       }
       return false
     })
-    if (reviewsList.length > 0) {
-      reviewsList.forEach(each => {
+
+    let totalRating = 0
+    let avgRating = 'NA'
+
+    if (finalList.length > 0) {
+      finalList.forEach(each => {
         totalRating += each.rating
       })
       avgRating = Math.round(totalRating / reviewsList.length, 1)
