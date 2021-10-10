@@ -33,15 +33,9 @@ class Home extends Component {
     apiStatus: apiStatusConst.loading,
     fetchedData: [],
     title: '',
-    aniListId: '',
-    malId: '',
-    formats: '',
-    status: '',
     year: '',
-    season: '',
     genres: [],
-    nsfw: false,
-    failure: {},
+    description: '',
     reviewsList: [],
   }
 
@@ -57,46 +51,20 @@ class Home extends Component {
         Authorization: `Bearer ${token}`,
       },
     }
-    const {
-      title,
-      aniListId,
-      malId,
-      formats,
-      status,
-      year,
-      season,
-      genres,
-      nsfw,
-    } = this.state
+
+    const {title, description, year, genres} = this.state
 
     let url = `https://api.aniapi.com/v1/anime?`
 
     if (title !== '') {
       url += `title=${title}`
     }
-    if (aniListId !== '') {
-      url += `&anilist_id=${aniListId}`
-    }
-    if (malId !== '') {
-      url += `&mal_id=${malId}`
-    }
-    if (formats !== '') {
-      url += `&formats=${formats}`
-    }
-    if (status !== '') {
-      url += `&status=${status}`
-    }
     if (year !== '') {
       url += `&year=${year}`
-    }
-    if (season !== '') {
-      url += `&season=${season}`
     }
     if (genres.length !== 0) {
       url += `&genres=${genres.join('')}`
     }
-
-    url += `&nsfw=${nsfw}`
 
     const response = await fetch(url, options)
     const responseData = await response.json()
@@ -105,9 +73,22 @@ class Home extends Component {
     if (response.ok) {
       const animeList = responseData.data.documents
       if (animeList !== undefined) {
+        const finalList = animeList.filter(each => {
+          if (
+            each.descriptions.en !== undefined &&
+            each.descriptions.en !== '' &&
+            each.descriptions.en !== null &&
+            each.descriptions.en
+              .toLowerCase()
+              .includes(description.toLowerCase())
+          ) {
+            return true
+          }
+          return false
+        })
         this.setState({
           apiStatus: apiStatusConst.success,
-          fetchedData: animeList,
+          fetchedData: finalList,
           reviewsList,
         })
       } else {
@@ -214,28 +195,8 @@ class Home extends Component {
     this.setState({title: event.target.value})
   }
 
-  onChangeAniListId = event => {
-    this.setState({aniListId: event.target.value})
-  }
-
-  onChangeMalId = event => {
-    this.setState({malId: event.target.value})
-  }
-
-  onChangeFormats = event => {
-    this.setState({formats: event.target.value})
-  }
-
-  onChangeStatus = event => {
-    this.setState({status: event.target.value})
-  }
-
   onChangeYear = event => {
     this.setState({year: event.target.value})
-  }
-
-  onChangeSeason = event => {
-    this.setState({season: event.target.value})
   }
 
   onChangeGenre = event => {
@@ -243,42 +204,11 @@ class Home extends Component {
     this.setState({genres: array})
   }
 
-  onClickNsfw = () => {
-    this.setState(
-      preState => ({apiStatus: apiStatusConst.loading, nsfw: !preState.nsfw}),
-      this.getAnimeApi,
-    )
+  onChangeDescription = event => {
+    this.setState({description: event.target.value})
   }
 
-  onBlurTitle = () => {
-    this.setState({apiStatus: apiStatusConst.loading}, this.getAnimeApi)
-  }
-
-  onBlurAniListId = () => {
-    this.setState({apiStatus: apiStatusConst.loading}, this.getAnimeApi)
-  }
-
-  onBlurMalId = () => {
-    this.setState({apiStatus: apiStatusConst.loading}, this.getAnimeApi)
-  }
-
-  onBlurFormats = () => {
-    this.setState({apiStatus: apiStatusConst.loading}, this.getAnimeApi)
-  }
-
-  onBlurStatus = () => {
-    this.setState({apiStatus: apiStatusConst.loading}, this.getAnimeApi)
-  }
-
-  onBlurYear = () => {
-    this.setState({apiStatus: apiStatusConst.loading}, this.getAnimeApi)
-  }
-
-  onBlurSeason = () => {
-    this.setState({apiStatus: apiStatusConst.loading}, this.getAnimeApi)
-  }
-
-  onBlurGenre = () => {
+  onBlurInput = () => {
     this.setState({apiStatus: apiStatusConst.loading}, this.getAnimeApi)
   }
 
@@ -322,26 +252,44 @@ class Home extends Component {
           <div
             className="anime-header"
             style={{
-              backgroundImage: `url(${bannerImage})`,
+              backgroundImage: `url(${
+                bannerImage === undefined ||
+                bannerImage === null ||
+                bannerImage === ''
+                  ? ''
+                  : bannerImage
+              })`,
             }}
           >
             <div className="anime-header-image-container">
               <img
-                src={coverImage}
+                src={
+                  coverImage === undefined ||
+                  coverImage === null ||
+                  coverImage === ''
+                    ? ''
+                    : coverImage
+                }
                 alt={engTitle}
                 className="anime-header-image"
               />
             </div>
             <div className="anime-header-details">
               <p className="anime-title">
-                {engTitle === undefined ? '' : `${engTitle}`}
+                {engTitle === undefined || engTitle === null
+                  ? ''
+                  : `${engTitle}`}
               </p>
               <p className="anime-title">
-                {japanTitle === undefined ? '  ' : ` ${japanTitle}`}
+                {japanTitle === undefined || japanTitle === null
+                  ? '  '
+                  : ` ${japanTitle}`}
               </p>
 
               <p className="anime-title">
-                {italianTitle === undefined ? '' : ` ${italianTitle}`}
+                {italianTitle === undefined || italianTitle === null
+                  ? ''
+                  : ` ${italianTitle}`}
               </p>
 
               <div className="rating-container">
@@ -351,9 +299,21 @@ class Home extends Component {
             </div>
           </div>
           <div className="anime-details">
-            <p className="anime-detail-text">Year: {seasonYear}</p>
+            <p className="anime-detail-text">
+              Year:{' '}
+              {seasonYear === undefined ||
+              seasonYear === null ||
+              seasonYear === ''
+                ? '1997'
+                : seasonYear}
+            </p>
 
-            <p className="anime-detail-text">Episodes: {episodes}</p>
+            <p className="anime-detail-text">
+              Episodes:{' '}
+              {episodes === undefined || episodes === null || episodes === ''
+                ? '25'
+                : episodes}
+            </p>
           </div>
 
           <hr className="anime-rule" />
@@ -361,17 +321,21 @@ class Home extends Component {
             <p className="anime-description-heading">Description</p>
             <p className="anime-description-eng">
               <span className="anime-description-bold">English:</span>
-              {engDesc === undefined || engDesc === '' ? `   -- --` : engDesc}
+              {engDesc === undefined || engDesc === '' || engDesc === null
+                ? `   -- --`
+                : engDesc}
             </p>
             <p className="anime-description-it">
               <span className="anime-description-bold">Italian:</span>{' '}
-              {italianDesc === undefined || italianDesc === ''
+              {italianDesc === undefined ||
+              italianDesc === '' ||
+              italianDesc === null
                 ? `   -- --`
                 : italianDesc}
             </p>
           </div>
           <p className="anime-genre-heading">Genres</p>
-          {genres !== undefined || genres.length !== 0 ? (
+          {genres !== undefined && genres.length !== 0 && genres !== null ? (
             <ul className="anime-genres-list">
               {genres.map(each => (
                 <li
@@ -423,16 +387,7 @@ class Home extends Component {
   }
 
   render() {
-    const {
-      title,
-      aniListId,
-      malId,
-      formats,
-      status,
-      year,
-      season,
-      genre,
-    } = this.state
+    const {title, description, year, genre} = this.state
     return (
       <div className="home-container">
         <div className="anime-logout-container">
@@ -451,7 +406,7 @@ class Home extends Component {
         </div>
 
         <h1 className="home-heading">Welcome! Search for your Anime here</h1>
-        <div className="user-inputs">
+        <form className="user-inputs">
           <div className="inputs-container">
             <div className="inputs-sub-container">
               <label htmlFor="title" className="label">
@@ -463,81 +418,49 @@ class Home extends Component {
                 placeholder="Title"
                 value={title}
                 onChange={this.onChangeTitle}
-                onBlur={this.onBlurTitle}
+                onBlur={this.onBlurInput}
                 className="anime-input"
+                autoComplete="off"
               />
               <span className="anime-instruction-text">Example: Naruto</span>
             </div>
             <div className="inputs-sub-container">
-              <label htmlFor="anilist-id" className="label">
-                AniList Id
+              <label htmlFor="description" className="label">
+                Description
               </label>
               <input
-                id="anilist-id"
-                type="number"
-                placeholder="Anilist Id"
-                value={aniListId}
-                onChange={this.onChangeAniListId}
-                onBlur={this.onBlurAniListId}
+                id="description"
+                type="text"
+                placeholder="Description"
+                value={description}
+                onChange={this.onChangeDescription}
+                onBlur={this.onBlurInput}
                 className="anime-input"
+                autoComplete="off"
               />
               <span className="anime-instruction-text">
-                Example: 20 or any positive integer
+                Example: The lord of Shimigami...
               </span>
             </div>
           </div>
+
           <div className="inputs-container">
             <div className="inputs-sub-container">
-              <label htmlFor="mal-id" className="label">
-                Mal Id
+              <label htmlFor="genre" className="label">
+                Genre
               </label>
               <input
-                id="mal-id"
-                type="number"
-                placeholder="Mal Id"
-                value={malId}
-                onChange={this.onChangeMalId}
-                onBlur={this.onBlurMalId}
-                className="anime-input"
-              />
-              <span className="anime-instruction-text">
-                Example: 15 or any positive integer
-              </span>
-            </div>
-            <div className="inputs-sub-container">
-              <label htmlFor="formats" className="label">
-                Formats
-              </label>
-              <input
-                id="formats"
+                id="genre"
                 type="text"
-                placeholder="Formats"
-                value={formats}
-                onChange={this.onChangeFormats}
-                onBlur={this.onBlurFormats}
+                placeholder="Genre"
+                value={genre}
+                onChange={this.onChangeGenre}
+                onBlur={this.onBlurInput}
                 className="anime-input"
+                autoComplete="off"
               />
               <span className="anime-instruction-text">
-                Example: 0,1.. or any positive integer
-              </span>
-            </div>
-          </div>
-          <div className="inputs-container">
-            <div className="inputs-sub-container">
-              <label htmlFor="status" className="label">
-                Status
-              </label>
-              <input
-                id="status"
-                type="text"
-                placeholder="Status"
-                value={status}
-                onChange={this.onChangeStatus}
-                onBlur={this.onBlurStatus}
-                className="anime-input"
-              />
-              <span className="anime-instruction-text">
-                Example: 0,1.. or any positive integer
+                Example: Thriller, action,...
               </span>
             </div>
             <div className="inputs-sub-container">
@@ -550,61 +473,14 @@ class Home extends Component {
                 placeholder="Year"
                 value={year}
                 onChange={this.onChangeYear}
-                onBlur={this.onBlurYear}
+                onBlur={this.onBlurInput}
                 className="anime-input"
+                autoComplete="off"
               />
               <span className="anime-instruction-text">Example: 1990</span>
             </div>
           </div>
-          <div className="inputs-container">
-            <div className="inputs-sub-container">
-              <label htmlFor="season" className="label">
-                Season
-              </label>
-              <input
-                id="season"
-                type="text"
-                placeholder="Season"
-                value={season}
-                onChange={this.onChangeSeason}
-                onBlur={this.onBlurSeason}
-                className="anime-input"
-              />
-              <span className="anime-instruction-text">
-                Example: 0,1.. or any positive integer
-              </span>
-            </div>
-            <div className="inputs-sub-container">
-              <label htmlFor="genre" className="label">
-                Genre
-              </label>
-              <input
-                id="genre"
-                type="text"
-                placeholder="Genre"
-                value={genre}
-                onChange={this.onChangeGenre}
-                onBlur={this.onBlurGenre}
-                className="anime-input"
-              />
-              <span className="anime-instruction-text">
-                Example: Thriller, action,...
-              </span>
-            </div>
-          </div>
-          <div className="anime-nsfw-container">
-            <input
-              id="nsfw"
-              type="checkbox"
-              onClick={this.onClickNsfw}
-              name="1"
-              className="anime-nsfw-input"
-            />
-            <label htmlFor="nsfw" className="label">
-              Not Safe For Work
-            </label>
-          </div>
-        </div>
+        </form>
         <div className="home-content-container">{this.renderUI()}</div>
       </div>
     )
